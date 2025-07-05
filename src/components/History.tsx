@@ -14,12 +14,12 @@ interface HistoryProps {
 export function History({ notes, onDeleteNote }: HistoryProps) {
   const [selectedNote, setSelectedNote] = useState<VoiceNote | null>(null)
 
-  const copyToClipboard = (text: string) => {
+  const copy_to_clipboard = (text: string) => {
     navigator.clipboard.writeText(text)
     toast.success('Copied to clipboard!')
   }
 
-  const handleDeleteNote = async (id: string) => {
+  const handle_delete_note = async (id: string) => {
     try {
       await onDeleteNote(id)
       toast.success('Note deleted')
@@ -32,8 +32,8 @@ export function History({ notes, onDeleteNote }: HistoryProps) {
     }
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
+  const format_date = (date_string: string) => {
+    const date = new Date(date_string)
     return date.toLocaleDateString('en-US', {
       weekday: 'short',
       year: 'numeric',
@@ -44,7 +44,8 @@ export function History({ notes, onDeleteNote }: HistoryProps) {
     })
   }
 
-  const truncateText = (text: string, maxLength: number = 100) => {
+  const truncate_text = (text: string | undefined, maxLength: number = 100) => {
+    if (!text) return ''
     if (text.length <= maxLength) return text
     return text.substring(0, maxLength) + '...'
   }
@@ -84,10 +85,10 @@ export function History({ notes, onDeleteNote }: HistoryProps) {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <p className="text-sm text-gray-800 line-clamp-2">
-                            {truncateText(note.correctedText || note.originalText)}
+                            {truncate_text(note.corrected_text || note.original_text)}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            {formatDate(note.createdAt)}
+                            {format_date(note.created_at)}
                           </p>
                         </div>
                         <Button
@@ -95,7 +96,7 @@ export function History({ notes, onDeleteNote }: HistoryProps) {
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
-                            handleDeleteNote(note.id)
+                            handle_delete_note(note.id)
                           }}
                           className="text-red-500 hover:text-red-700 hover:bg-red-50 ml-2"
                         >
@@ -116,7 +117,7 @@ export function History({ notes, onDeleteNote }: HistoryProps) {
                         Note Details
                       </CardTitle>
                       <p className="text-sm text-gray-600">
-                        {formatDate(selectedNote.createdAt)}
+                        {format_date(selectedNote.created_at)}
                       </p>
                     </CardHeader>
                     <CardContent>
@@ -135,13 +136,13 @@ export function History({ notes, onDeleteNote }: HistoryProps) {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => copyToClipboard(selectedNote.correctedText)}
+                                onClick={() => copy_to_clipboard(selectedNote.corrected_text)}
                               >
                                 <Copy className="w-4 h-4" />
                               </Button>
                             </div>
                             <p className="text-gray-800 whitespace-pre-wrap">
-                              {selectedNote.correctedText}
+                              {selectedNote.corrected_text}
                             </p>
                           </div>
                         </TabsContent>
@@ -155,13 +156,13 @@ export function History({ notes, onDeleteNote }: HistoryProps) {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => copyToClipboard(selectedNote.originalText)}
+                                onClick={() => copy_to_clipboard(selectedNote.original_text)}
                               >
                                 <Copy className="w-4 h-4" />
                               </Button>
                             </div>
                             <p className="text-gray-800 whitespace-pre-wrap">
-                              {selectedNote.originalText}
+                              {selectedNote.original_text}
                             </p>
                           </div>
                         </TabsContent>

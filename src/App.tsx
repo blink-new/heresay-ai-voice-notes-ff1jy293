@@ -8,18 +8,18 @@ import { Mic, Book, History as HistoryIcon } from 'lucide-react'
 
 export interface VoiceNote {
   id: string
-  originalText: string
-  correctedText: string
-  createdAt: string
-  userId: string
+  original_text: string
+  corrected_text: string
+  created_at: string
+  user_id: string
 }
 
 export interface DictionaryEntry {
   id: string
   word: string
-  correctSpelling: string
-  userId: string
-  createdAt: string
+  correct_spelling: string
+  user_id: string
+  created_at: string
 }
 
 function App() {
@@ -77,7 +77,7 @@ function App() {
       const newNote = await blink.db.voice_notes.create({
         original_text: originalText,
         corrected_text: correctedText,
-        user_id: user.id,
+        user_id: user!.id,
         created_at: new Date().toISOString()
       })
       setNotes(prev => [newNote, ...prev])
@@ -91,7 +91,7 @@ function App() {
       const newEntry = await blink.db.dictionary_entries.create({
         word: word.toLowerCase(),
         correct_spelling: correctSpelling,
-        user_id: user.id,
+        user_id: user!.id,
         created_at: new Date().toISOString()
       })
       setDictionary(prev => [...prev, newEntry].sort((a, b) => a.word.localeCompare(b.word)))
